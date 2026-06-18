@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem Rekod Pembayaran JPTE</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <img src="smkse.jpg" class="logo" alt="SMKSE Logo">
+    <h2>SMK SIMPANG EMPAT</h2>
+    <p>BERUSAHA · YAKIN · BERJAYA</p>
+
+    <nav>
+      <button class="active" onclick="setPage('ALL', this)">Dashboard</button>
+      <button onclick="setPage('Heng Team', this)">Heng Team</button>
+      <button onclick="setPage('Alen Team', this)">Alen Team</button>
+      <button onclick="setPage('Pow Team', this)">Pow Team</button>
+      <button onclick="setPage('DAILY', this)">Laporan Harian</button>
+    </nav>
+
+    <div class="admin-box">
+      <div id="modeText">VIEW MODE<br><span>Hanya boleh melihat</span></div>
+      <button id="loginBtn" onclick="adminLogin()">Admin Login</button>
+      <button id="logoutBtn" onclick="adminLogout()" class="hidden">Logout Admin</button>
+    </div>
+
+    <footer>© 2026 JPTE SMKSE</footer>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div>
+        <h1>SISTEM REKOD PEMBAYARAN</h1>
+        <p>JPTE SMK SIMPANG EMPAT 2026/27</p>
+      </div>
+      <div class="mode-card" id="modeCard">VIEW MODE</div>
+    </header>
+
+    <section class="stats">
+      <div class="card"><span>Jumlah Rekod</span><b id="totalRecords">0</b></div>
+      <div class="card green"><span>Jumlah Kutipan</span><b id="totalAmount">RM0.00</b></div>
+      <div class="card yellow"><span>Heng Team</span><b id="hengTotal">RM0.00</b></div>
+      <div class="card blue"><span>Alen Team</span><b id="alenTotal">RM0.00</b></div>
+      <div class="card red"><span>Pow Team</span><b id="powTotal">RM0.00</b></div>
+    </section>
+
+    <section class="team-cards">
+      <div class="team heng" onclick="quickPage('Heng Team')">
+        <h3>Heng Team</h3><p>6UTM</p><button>Lihat Rekod →</button>
+      </div>
+      <div class="team alen" onclick="quickPage('Alen Team')">
+        <h3>Alen Team</h3><p>Guru, 6UPSI, 6UIA</p><button>Lihat Rekod →</button>
+      </div>
+      <div class="team pow" onclick="quickPage('Pow Team')">
+        <h3>Pow Team</h3><p>6UMS</p><button>Lihat Rekod →</button>
+      </div>
+    </section>
+
+    <section class="panel admin-only hidden" id="formPanel">
+      <h2>Tambah / Edit Rekod</h2>
+      <form id="paymentForm">
+        <input type="hidden" id="editId">
+        <select id="className" required onchange="autoTeam()">
+          <option value="">Pilih Kelas / Guru</option>
+          <option>Guru</option>
+          <option>6UTM</option>
+          <option>6UPSI</option>
+          <option>6UIA</option>
+          <option>6UMS</option>
+        </select>
+        <select id="team" required>
+          <option value="">Pilih Team</option>
+          <option>Heng Team</option>
+          <option>Alen Team</option>
+          <option>Pow Team</option>
+        </select>
+        <input id="amount" type="number" min="0" step="0.01" placeholder="Total Harga / Jumlah Kutipan" required>
+        <input id="date" type="date" required>
+        <button type="submit" id="saveBtn">Simpan Rekod</button>
+        <button type="button" class="cancel hidden" id="cancelBtn" onclick="cancelEdit()">Batal Edit</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="table-top">
+        <h2 id="pageTitle">Rekod Harian</h2>
+        <div>
+          <input id="search" oninput="render()" placeholder="Cari kelas / tarikh">
+          <button onclick="exportCSV()">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="daily-box">
+        <h3>Statistik Setiap Hari</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tarikh</th>
+                <th>Heng Team</th>
+                <th>Alen Team</th>
+                <th>Pow Team</th>
+                <th>Total Hari</th>
+              </tr>
+            </thead>
+            <tbody id="dailyList"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <h3>Senarai Rekod</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tarikh</th>
+              <th>Kelas / Guru</th>
+              <th>Team</th>
+              <th>Total Harga</th>
+              <th class="admin-column">Action</th>
+            </tr>
+          </thead>
+          <tbody id="recordList"></tbody>
+        </table>
+      </div>
+
+      <p class="notice" id="notice">Anda sedang dalam mod lihat sahaja. Hanya admin boleh menambah, mengubah atau memadam rekod.</p>
+    </section>
+  </main>
+
+<script src="script.js"></script>
+</body>
+</html>
